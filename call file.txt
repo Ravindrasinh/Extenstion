@@ -1,0 +1,3 @@
+phtml file call in cms home page code now please check it.
+
+{{block class="Bliss\StoreBanner\Block\Storebanner\Index" template="Bliss_StoreBanner::storebanner/index.phtml"}}
