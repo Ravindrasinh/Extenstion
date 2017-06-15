@@ -1,3 +1,7 @@
 phtml file call in cms home page code now please check it.
 
 {{block class="Bliss\StoreBanner\Block\Storebanner\Index" template="Bliss_StoreBanner::storebanner/index.phtml"}}
+
+catalog product information add tab Link
+http://phpcmsframework.blogspot.in/2012/12/magento-steps-to-add-custom-tabs-to.html
+
