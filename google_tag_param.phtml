@@ -1,0 +1,78 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * @var \Magento\Theme\Block\Html\Header\Logo $block
+ */
+?>
+<script src="<?php echo $this->getViewFileUrl("js/jquery-1.11.3.min.js"); ?>"></script>
+<script src="<?php echo $this->getViewFileUrl("js/menumaker.js"); ?>"></script>
+<script src="<?php echo $this->getViewFileUrl("js/jquery.bxslider.min.js"); ?>"></script>
+<link rel="stylesheet" href="<?php echo $this->getViewFileUrl("css/menumaker.css"); ?>" />
+<link rel="stylesheet" href="<?php echo $this->getViewFileUrl("css/jquery.bxslider.css"); ?>" />
+<?php 
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$request = $objectManager->get('Magento\Framework\App\Action\Context')->getRequest();
+	$category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');//get current category
+	$product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');//get current product
+	
+	
+	
+	$category_urlkey = "";
+	$pagetype = "";
+	$product_price = "";
+	
+	if ($request->getFullActionName() == 'cms_index_index') {
+		$category_urlkey = "index";
+		$pagetype = "home" ;
+	}
+	else if($product){
+		//echo $category->getId();
+		//echo $category->getName();
+		$category_urlkey = $product->getSku();
+		$pagetype = "product" ;
+		$product_price = $product->getFinalPrice();
+	}else if($category){
+		
+		$category_urlkey = $category->getUrlKey();
+		$pagetype = "category" ;
+		
+	}
+	
+ ?>
+   <script type="text/javascript"> 
+	   var google_tag_params = { 
+	   ecomm_prodid: <?php echo $category_urlkey; ?>, 
+	   ecomm_pagetype: <?php echo $pagetype; ?>, 
+	   ecomm_totalvalue: <?php echo $product_price; ?> 
+    }; 
+   </script>
+
+ 
+<?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('head-top')->toHtml();?>
+<?php $storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt();?>
+<span data-action="toggle-nav" class="action nav-toggle"><span><?php /* @escapeNotVerified */ echo __('Toggle Nav') ?></span></span>
+<?php if ($block->isHomePage()):?>
+    <strong class="logo">
+<?php else: ?>
+    <a class="logo" href="<?php echo $block->getUrl(''); ?>" title="<?php /* @escapeNotVerified */ echo $storeName ?>">
+<?php endif ?>
+        <img src="<?php /* @escapeNotVerified */ echo $block->getLogoSrc() ?>"
+             alt="<?php /* @escapeNotVerified */ echo $block->getLogoAlt() ?>"
+             <?php echo $block->getLogoWidth() ? 'width="' . $block->getLogoWidth() . '"' : '' ?>
+             <?php echo $block->getLogoHeight() ? 'height="' . $block->getLogoHeight() . '"' : '' ?>
+        />
+<?php if ($block->isHomePage()):?>
+    </strong>
+<?php else:?>
+    </a>
+<?php endif?>
+
+
+
+
